@@ -913,6 +913,9 @@ myC=CH[charIdx];initWorld();
 const QP='jvstennis-v1-';
 const SIGU=(()=>{try{const q=new URLSearchParams(location.search).get('sig');if(q)return q}catch(e){}return'wss://0.peerjs.com:443/'})();
 const ICE=[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'},{urls:['turn:eu-0.turn.peerjs.com:3478','turn:us-0.turn.peerjs.com:3478'],username:'peerjs',credential:'peerjsp'}];
+async function turnCreds(){try{const user=(Math.floor(Date.now()/1000)+86400)+':jvs'+rid(6),k=await crypto.subtle.importKey('raw',new TextEncoder().encode('openrelayprojectsecret'),{name:'HMAC',hash:'SHA-1'},false,['sign']),sg=new Uint8Array(await crypto.subtle.sign('HMAC',k,new TextEncoder().encode(user)));let bin='';sg.forEach(c=>bin+=String.fromCharCode(c));
+ return[{urls:['turn:staticauth.openrelay.metered.ca:80','turn:staticauth.openrelay.metered.ca:443','turn:staticauth.openrelay.metered.ca:443?transport=tcp','turns:staticauth.openrelay.metered.ca:443?transport=tcp'],username:user,credential:btoa(bin)}]}catch(e){return[]}}
+async function netIce(){if(!NET.ice)NET.ice=ICE.concat(await turnCreds());return NET.ice}
 const rid=(n,a='abcdefghjkmnpqrstuvwxyz23456789')=>{let r='';for(let i=0;i<n;i++)r+=a[Math.floor(Math.random()*a.length)];return r};
 const myName=()=>(ACC&&ACC.name)||'Jogador';
 function netStatus(msg,sub,room){$('onMsg').textContent=msg||'';$('onSub').textContent=sub||'';$('onRoom').textContent=room||'';$('home').classList.toggle('onwait',!!msg)}
@@ -925,36 +928,37 @@ function sigOpen(id){return new Promise((res,rej)=>{let ws,done=false;const fin=
  ws.onerror=()=>fin(rej,'rede');ws.onclose=()=>{fin(rej,'rede');if(NET.ws===ws){NET.ws=null;clearInterval(NET.hb);if(!NET.on&&NET.mode&&!NET.pc){netStatus('Conexão com o servidor online caiu.','Toque em Cancelar e tente de novo.')}}}})}
 function useWs(ws,id){if(NET.ws&&NET.ws!==ws){try{NET.ws.close()}catch(e){}}NET.ws=ws;NET.id=id;clearInterval(NET.hb);NET.hb=setInterval(()=>{try{ws.send('{"type":"HEARTBEAT"}')}catch(e){}},5000)}
 function sigSend(type,payload,dst){try{NET.ws&&NET.ws.readyState==1&&NET.ws.send(JSON.stringify({type,payload,dst}))}catch(e){}}
-function mkPC(){const pc=new RTCPeerConnection({iceServers:ICE});NET.pc=pc;NET.cq=[];
+function mkPC(){const pc=new RTCPeerConnection({iceServers:NET.ice||ICE});NET.pc=pc;NET.cq=[];
  pc.onicecandidate=e=>{if(e.candidate&&NET.peer)sigSend('CANDIDATE',{c:e.candidate.toJSON?e.candidate.toJSON():e.candidate},NET.peer)};
  pc.ondatachannel=e=>setupCh(e.channel);
- pc.onconnectionstatechange=()=>{const cs=pc.connectionState;if((cs=='failed'||cs=='closed')&&NET.pc===pc){if(NET.on)netLost();else if(NET.tryCb)NET.tryCb.rej('falhou')}};return pc}
+ pc.onconnectionstatechange=()=>{const cs=pc.connectionState;if((cs=='failed'||cs=='closed')&&NET.pc===pc){if(NET.on)netLost();else if(NET.tryCb)NET.tryCb.rej('falhou');else if(NET.role=='host')hostFail()}};return pc}
+function hostFail(){resetPC();if(NET.on||!NET.mode)return;NET.fails=(NET.fails||0)+1;netStatus(NET.code?'Mande este código para o seu amigo':'Procurando adversário…','Não deu para conectar com o último jogador (a rede pode ter bloqueado). Esperando de novo…',NET.code);if(NET.mode=='quick'&&NET.id!==QP+'q0')NET.rq=setTimeout(()=>{if(NET.mode=='quick'&&!NET.on&&!NET.pc)netQuick()},4000)}
 function setupCh(dc){NET.ch[dc.label]=dc;dc.onopen=()=>{if(NET.ch.s&&NET.ch.e&&NET.ch.s.readyState=='open'&&NET.ch.e.readyState=='open')netConnected()};dc.onmessage=e=>{let m;try{m=JSON.parse(e.data)}catch(x){return}netRecv(m)};dc.onclose=()=>{if(NET.on&&dc.label=='e')netLost()}}
 function flushCand(){const pc=NET.pc;if(!pc||!pc.remoteDescription)return;NET.cq.forEach(c=>pc.addIceCandidate(c).catch(()=>{}));NET.cq=[]}
 function sigMsg(m){const pl=m.payload||{};
- if(m.type=='OFFER'){if(NET.role!='host')return;if(NET.pc||NET.on){sigSend('ANSWER',{busy:1},m.src);return}NET.peer=m.src;const pc=mkPC();
+ if(m.type=='OFFER'){if(NET.role!='host')return;if(NET.pc||NET.on){sigSend('ANSWER',{busy:1},m.src);return}NET.peer=m.src;const pc=mkPC();clearTimeout(NET.rq);netStatus('Adversário encontrado!','Conectando…',NET.code);
   pc.setRemoteDescription(pl.sdp).then(()=>{flushCand();return pc.createAnswer()}).then(a=>pc.setLocalDescription(a)).then(()=>sigSend('ANSWER',{sdp:pc.localDescription},m.src)).catch(()=>resetPC());
-  clearTimeout(NET.hto);NET.hto=setTimeout(()=>{if(!NET.on&&NET.pc===pc)resetPC()},15000)}
+  clearTimeout(NET.hto);NET.hto=setTimeout(()=>{if(!NET.on&&NET.pc===pc)hostFail()},25000)}
  else if(m.type=='ANSWER'){if(m.src!==NET.peer||!NET.pc)return;if(pl.busy){NET.tryCb&&NET.tryCb.rej('busy');return}NET.pc.setRemoteDescription(pl.sdp).then(flushCand).catch(()=>NET.tryCb&&NET.tryCb.rej('erro'))}
  else if(m.type=='CANDIDATE'){if(m.src!==NET.peer||!NET.pc||!pl.c)return;if(NET.pc.remoteDescription)NET.pc.addIceCandidate(pl.c).catch(()=>{});else NET.cq.push(pl.c)}
- else if(m.type=='EXPIRE'||m.type=='LEAVE'){if(m.src===NET.peer&&!NET.on){if(NET.tryCb)NET.tryCb.rej('off');else if(NET.role=='host')resetPC()}}}
+ else if(m.type=='EXPIRE'||m.type=='LEAVE'){if(m.src===NET.peer&&!NET.on){if(NET.tryCb)NET.tryCb.rej('off');else if(NET.role=='host')hostFail()}}}
 function resetPC(){try{NET.pc&&NET.pc.close()}catch(e){}NET.pc=null;NET.ch={};NET.peer=null;NET.cq=[]}
 function guestTry(dst){return new Promise((res,rej)=>{resetPC();NET.peer=dst;const pc=mkPC();setupCh(pc.createDataChannel('s',{ordered:false,maxRetransmits:0}));setupCh(pc.createDataChannel('e'));
- const to=setTimeout(()=>NET.tryCb&&NET.tryCb.rej('tempo'),14000);
+ const to=setTimeout(()=>NET.tryCb&&NET.tryCb.rej('tempo'),25000);
  NET.tryCb={res:v=>{clearTimeout(to);NET.tryCb=null;res(v)},rej:v=>{clearTimeout(to);NET.tryCb=null;resetPC();rej(v)}};
  pc.createOffer().then(o=>pc.setLocalDescription(o)).then(()=>sigSend('OFFER',{sdp:pc.localDescription},dst)).catch(()=>NET.tryCb&&NET.tryCb.rej('erro'))})}
 async function guestWs(){if(NET.ws&&NET.role=='guest')return;const id=QP+'g'+rid(10);const ws=await sigOpen(id);useWs(ws,id);NET.role='guest'}
-async function netQuick(){NET.mode='quick';netStatus('Procurando adversário…','Conectando ao servidor online');
+async function netQuick(){NET.mode='quick';NET.code='';clearTimeout(NET.rq);netStatus('Procurando adversário…','Conectando ao servidor online');await netIce();if(NET.mode!='quick')return;let lastErr='';
  for(let i=0;i<10;i++){if(NET.mode!='quick')return;const id=QP+'q'+i;
-  try{if(NET.ws){try{NET.ws.close()}catch(e){}NET.ws=null}const ws=await sigOpen(id);if(NET.mode!='quick'){ws.close();return}useWs(ws,id);NET.role='host';netStatus('Procurando adversário…','Aguardando outro jogador entrar. Deixe esta tela aberta.');return}
+  try{if(NET.ws){try{NET.ws.close()}catch(e){}NET.ws=null}const ws=await sigOpen(id);if(NET.mode!='quick'){ws.close();return}useWs(ws,id);NET.role='host';netStatus('Procurando adversário…',lastErr||'Aguardando outro jogador entrar. Deixe esta tela aberta.');if(i)NET.rq=setTimeout(()=>{if(NET.mode=='quick'&&!NET.on&&!NET.pc)netQuick()},9000+Math.random()*4000);return}
   catch(e){if(e!='taken'){netStatus('Não foi possível conectar ao servidor online.','Verifique a internet e tente de novo.');NET.mode='err';return}}
-  try{await guestWs();if(NET.mode!='quick')return;netStatus('Adversário encontrado!','Conectando…');await guestTry(id);return}catch(e){if(NET.mode!='quick')return;netStatus('Procurando adversário…','Tentando outra vaga')}}
- netStatus('Nenhum adversário disponível agora.','Toque em Cancelar e tente de novo.')}
-async function netCreate(){NET.mode='room';netStatus('Criando sala…','Conectando ao servidor online');
- for(let k=0;k<4;k++){const code=rid(4,'ABCDEFGHJKLMNPQRSTUVWXYZ');try{const ws=await sigOpen(QP+'r'+code.toLowerCase());if(NET.mode!='room'){ws.close();return}useWs(ws,QP+'r'+code);NET.role='host';netStatus('Mande este código para o seu amigo','Aguardando ele entrar. Deixe esta tela aberta.',code);return}catch(e){if(e!='taken'){netStatus('Não foi possível conectar ao servidor online.','Verifique a internet e tente de novo.');NET.mode='err';return}}}
+  try{await guestWs();if(NET.mode!='quick')return;netStatus('Adversário encontrado!','Conectando…');await guestTry(id);return}catch(e){if(NET.mode!='quick')return;lastErr=e=='falhou'||e=='tempo'?'Encontramos um jogador, mas a conexão falhou. Procurando outro…':'';netStatus('Procurando adversário…',lastErr||'Tentando outra vaga')}}
+ netStatus('Nenhum adversário disponível agora.','Toque em Cancelar e tente de novo.');NET.rq=setTimeout(()=>{if(NET.mode=='quick'&&!NET.on)netQuick()},5000)}
+async function netCreate(){NET.mode='room';netStatus('Criando sala…','Conectando ao servidor online');await netIce();
+ for(let k=0;k<4;k++){const code=rid(4,'ABCDEFGHJKLMNPQRSTUVWXYZ');try{const ws=await sigOpen(QP+'r'+code.toLowerCase());if(NET.mode!='room'){ws.close();return}useWs(ws,QP+'r'+code);NET.role='host';NET.code=code;netStatus('Mande este código para o seu amigo','Aguardando ele entrar. Deixe esta tela aberta.',code);return}catch(e){if(e!='taken'){netStatus('Não foi possível conectar ao servidor online.','Verifique a internet e tente de novo.');NET.mode='err';return}}}
  netStatus('Não foi possível criar a sala.','Tente de novo.')}
-async function netJoin(){const code=($('onCode').value||'').trim().toUpperCase();if(!/^[A-Z]{4}$/.test(code)){toast('Digite o código de 4 letras');return}NET.mode='join';netStatus('Entrando na sala '+code+'…','Conectando ao servidor online');
- try{await guestWs();if(NET.mode!='join')return;await guestTry(QP+'r'+code.toLowerCase())}catch(e){if(NET.mode!='join')return;netStatus(e=='off'||e=='tempo'?'Sala não encontrada.':e=='busy'?'Essa sala já está cheia.':'Não foi possível entrar na sala.','Confira o código e tente de novo.');NET.mode='err'}}
+async function netJoin(){const code=($('onCode').value||'').trim().toUpperCase();if(!/^[A-Z]{4}$/.test(code)){toast('Digite o código de 4 letras');return}NET.mode='join';NET.code='';netStatus('Entrando na sala '+code+'…','Conectando ao servidor online');await netIce();
+ try{await guestWs();if(NET.mode!='join')return;netStatus('Sala encontrada…','Conectando com o seu amigo');await guestTry(QP+'r'+code.toLowerCase())}catch(e){if(NET.mode!='join')return;netStatus(e=='off'?'Sala não encontrada.':e=='busy'?'Essa sala já está cheia.':e=='falhou'||e=='tempo'?'A sala existe, mas a conexão falhou.':'Não foi possível entrar na sala.',e=='off'?'Confira o código e tente de novo.':e=='falhou'||e=='tempo'?'A rede pode estar bloqueando. Tente de novo ou use Wi-Fi nos dois celulares.':'Confira o código e tente de novo.');NET.mode='err'}}
 function netConnected(){if(NET.on)return;if(NET.tryCb)NET.tryCb.res();clearTimeout(NET.hto);NET.on=true;netStatus('Conectado!','Preparando a quadra…');
  const c=CH[charIdx]||CH[0];netSendE({t:'hi',v:1,name:myName(),ch:c});setTimeout(()=>{if(NET.ws){try{NET.ws.close()}catch(e){}NET.ws=null;clearInterval(NET.hb)}},2500)}
 function netSendE(m){const c=NET.ch.e;if(c&&c.readyState=='open')try{c.send(JSON.stringify(m))}catch(e){}}
@@ -1015,7 +1019,7 @@ function gEvent(e){const H=NET.c1?NET.c1.n:'Adversário';
 function netMatchEnd(hw){const L=NET.lp||[games[0],games[1]],sc=L[1]+' x '+L[0];S.played++;if(hw){S.wins++;addBalls(10)}saveS();netEv({k:'end',hw:hw?1:0,sc:L[0]+' x '+L[1]});netEndOv(hw,sc)}
 function netEndOv(win,sc){showOv(win?'Você venceu!':'Você perdeu','Placar '+sc+(win?'. Você ganhou 10 bolas de tênis!':'. Peça uma revanche!'),'Revanche',()=>{if(!NET.on){showHome();return}if(NET.role=='host')netStart();else{netSendE({t:'again'});toast('Pedido de revanche enviado')}})}
 function netLost(msg){if(!NET.on&&!NET.pc)return;const wasOn=NET.on;netLeave(false);if(wasOn){st='menu';showOv('Partida encerrada',msg||'A conexão com o adversário caiu.','Voltar ao menu',showHome)}}
-function netLeave(send){if(send&&NET.on)netSendE({t:'bye'});NET.mode='';NET.on=false;NET.tryCb=null;clearTimeout(NET.hto);clearInterval(NET.hb);resetPC();if(NET.ws){try{NET.ws.close()}catch(e){}NET.ws=null}NET.role=null;NET.opp=null;NET.snaps=[];NET.RS=NET.sv=null;NET.rx={x:0,y:0};$('home').classList.remove('onwait')}
+function netLeave(send){if(send&&NET.on)netSendE({t:'bye'});NET.mode='';NET.code='';clearTimeout(NET.rq);NET.on=false;NET.tryCb=null;clearTimeout(NET.hto);clearInterval(NET.hb);resetPC();if(NET.ws){try{NET.ws.close()}catch(e){}NET.ws=null}NET.role=null;NET.opp=null;NET.snaps=[];NET.RS=NET.sv=null;NET.rx={x:0,y:0};$('home').classList.remove('onwait')}
 $('hOn').onclick=()=>{if(locked(CH[charIdx])){toast('Escolha um tenista desbloqueado');return}if(!window.RTCPeerConnection){toast('Seu navegador não suporta o modo online');return}$('onMe').textContent='👤 '+myName();netStatus('');$('home').classList.add('online');$('home').scrollTop=0};
 $('onBack').onclick=()=>{netLeave(true);$('home').classList.remove('online','onwait')};
 $('onCancel').onclick=()=>{netLeave(true);netStatus('')};
