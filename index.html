@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <title>JVS Tennis</title>
 <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
@@ -304,7 +305,7 @@ body.play #shots{display:flex}
 <div class="howp"><h2>Como jogar</h2><ul><li>Joystick no canto: move o jogador para os lados e, empurrando para cima, sobe até a rede.</li><li>Na rede, quando a bola vier alta (lob), arraste para baixo e solte para dar um smash.</li><li>Quando a bola chega, o tempo para: mova o jogador, arraste na tela para mirar e solte para bater.</li><li>Cada personagem tem velocidade, potência e precisão diferentes.</li><li>Na tela inicial você escolhe superfície (saibro, dura ou grama), dia ou noite, dificuldade e formato da partida.</li><li>Golpes escondidos nos botões: segure Spin e arraste para baixo para um lob; segure Slice e arraste para baixo para um drop shot. Com bola alta perto da rede, Voleio vira smash. O nome do golpe aparece em cima da mira.</li><li>Para bater, segure um botão de golpe, arraste para mirar e solte. A mira muda de cor e de distância conforme o golpe. Slice dá uma bola curta e baixa, Spin é a batida normal com efeito e Voleio, quando você está na rede, bate a bola antes de quicar com mais força.</li><li>Bola do lado esquerdo do jogador é backhand, do direito é forehand.</li><li>Placar de 0 a 6: vence quem fizer 6 pontos primeiro.</li><li>Em Configurar partida você escolhe o tipo de gemido dos tenistas.</li><li>Cada vitória vale 10 bolas de tênis. Veja missões e tenistas premium no Passe.</li><li>No saque, mire na caixa cruzada. Você tem duas tentativas.</li></ul><button id="hBack" class="sec">Voltar</button></div>
 <div class="avsp"><div class="avhead"><h2>Avatares</h2><span class="chip balls" id="avsBalls"></span></div><p class="avsp-p">Toque em um tenista para jogar com ele. Os premium custam 200 bolas de tênis.</p><div class="avgrid" id="avGrid"></div><div class="strow"><button id="avsBack" class="sec">Voltar</button></div></div>
 <div class="trp"><div class="avhead"><h2>Treinamento</h2><span class="chip balls" id="trBalls"></span></div><p class="avsp-p">Complete os desafios para ganhar bolas de tênis. Você tem 5 vidas em cada desafio: cada ponto perdido gasta uma.</p><div class="trgrid" id="trGrid"></div><div class="strow"><button id="trBack" class="sec">Voltar</button></div></div>
-<div class="onp"><div class="avhead"><h2>Online</h2><span class="chip" id="onMe"></span></div>
+<div class="onp"><div class="avhead"><h2>Online <small style="font-size:11px;opacity:.55;font-weight:600">versão 69</small></h2><span class="chip" id="onMe"></span></div>
 <div class="pbox" id="onMenu"><h3>Partida rápida</h3><p class="onp-p">Encontre um adversário em qualquer lugar do mundo.</p><button id="onQuick" class="ongo">Procurar adversário</button>
 <h3 style="margin-top:12px">Jogar com um amigo</h3><p class="onp-p">Crie uma sala e mande o código para o seu amigo, ou digite o código que ele te mandou.</p>
 <div class="onrow"><button id="onCreate" class="onsec">Criar sala</button><input id="onCode" maxlength="4" placeholder="CÓDIGO" autocomplete="off" autocapitalize="characters"><button id="onJoin" class="onsec">Entrar</button></div></div>
@@ -365,7 +366,9 @@ let S=JSON.parse(JSON.stringify(STAT0));try{Object.assign(S,JSON.parse(localStor
 const saveS=()=>{if(aiVsAi)return;try{localStorage.setItem('mtn_stats',JSON.stringify(S))}catch(e){}};
 function recMatch(win){if(aiVsAi)return;S.played++;if(win){S.wins++;if(cfg.l>=5)S.proWins=(S.proWins||0)+1;addBalls(10)}const a=S.surf[cfg.surf]=S.surf[cfg.surf]||{p:0,w:0};a.p++;if(win)a.w++;const c=S.ch[myC.n]=S.ch[myC.n]||{p:0,w:0};c.p++;if(win)c.w++;saveS()}
 let best=1;try{best=+localStorage.getItem('mtn_best')||1}catch(e){}
-let TRAIN=false;const NET={on:false,role:null,ws:null,pc:null,ch:{},peer:null,hb:null,rx:{x:0,y:0},RS:null,sv:null,snaps:[],ls:0,li:0,lin:'',mode:'',c0:null,c1:null,cq:[],tryCb:null,opp:null,sigOk:false};
+let TRAIN=false;const APP_VER='69';
+(function(){try{fetch(location.pathname+'?chk='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(t=>{const m=t.match(/APP_VER='([^']+)'/);if(m&&m[1]!==APP_VER&&!sessionStorage.getItem('upd'+m[1])){sessionStorage.setItem('upd'+m[1],'1');location.replace(location.pathname+'?v='+m[1])}}).catch(()=>{})}catch(e){}})();
+const NET={on:false,role:null,ws:null,pc:null,ch:{},peer:null,hb:null,rx:{x:0,y:0},RS:null,sv:null,snaps:[],ls:0,li:0,lin:'',mode:'',c0:null,c1:null,cq:[],tryCb:null,opp:null,sigOk:false};
 const me={x:0,v:0,sw:0,ox:0,od:0,y:0,sm:0,k:0},ai={x:0,v:0,sw:0,ox:0,od:0,k:0,y:0},aim={x:0,d:.22,up:0,dn:0},drag={on:false,sx:0,sy:0,x:0,y:0,tr:[]};
 
 let SFXo=null,NZB=null;
