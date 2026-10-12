@@ -34,7 +34,7 @@ canvas{position:fixed;inset:0;display:block}
 #s0{color:var(--cy)}#s1{color:var(--coral)}
 #mid b{display:block;font-size:18px;font-weight:800}
 #mid small{display:block;font-size:12px;color:var(--lime);min-height:14px}
-#toast{position:fixed;left:0;right:0;top:38%;text-align:center;font-size:44px;font-weight:800;pointer-events:none;opacity:0;text-shadow:0 0 24px rgba(215,255,58,.6)}
+#toast{position:fixed;z-index:70;left:0;right:0;top:38%;text-align:center;font-size:44px;font-weight:800;pointer-events:none;opacity:0;text-shadow:0 0 24px rgba(215,255,58,.6)}
 #toast.on{animation:pop 1.2s ease-out}
 @keyframes pop{0%{opacity:0;transform:scale(.7)}15%{opacity:1;transform:scale(1.05)}75%{opacity:1}100%{opacity:0;transform:scale(1)}}
 #hint{position:fixed;left:160px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 94px);text-align:center;font-size:14px;opacity:.75;pointer-events:none}
@@ -199,6 +199,26 @@ body.play #shots{display:flex}
 @media (max-width:520px){#shots{gap:6px;right:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 86px)}#hint{left:12px!important;bottom:calc(env(safe-area-inset-bottom,0px) + 222px)}#shots button{width:56px;height:56px;font-size:13px}#shots .sp{width:62px;height:62px}}
 #chant{position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 54px);text-align:center;font:800 17px 'Bricolage Grotesque',system-ui,sans-serif;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.7);pointer-events:none;opacity:0;transition:opacity .35s;z-index:3;padding:0 12px}
 #chant.on{opacity:1}#chant b{color:var(--lime)}#chant small{display:block;font-size:11px;font-weight:600;opacity:.75}
+
+#acct{position:fixed;inset:0;z-index:45;display:none;align-items:center;justify-content:center;padding:12px;background:radial-gradient(circle at 30% 30%,#1b2a55,#060a1a 75%);font-family:'Bricolage Grotesque',system-ui,sans-serif;color:var(--tx);overflow:auto}
+#acct.on{display:flex}
+#acct .ab{display:grid;grid-template-columns:200px 1fr;gap:18px;align-items:center;width:min(720px,100%);background:rgba(9,13,30,.7);border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:16px 18px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+#acct .al{text-align:center}#acct .al img{width:120px;height:120px;border-radius:50%;box-shadow:0 0 30px rgba(215,255,58,.25)}#acct .al b{display:block;margin-top:8px;font-size:17px}#acct .al small{opacity:.65;font-size:11px}
+#acct h2{margin:0 0 4px;font-size:18px}#acct p{margin:0 0 8px;font-size:11.5px;opacity:.75;line-height:1.35}
+#acct .tabs{display:flex;gap:6px;margin-bottom:8px}#acct .tabs button{flex:1;font:700 12px inherit;font-family:inherit;padding:6px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:transparent;color:var(--tx)}#acct .tabs button.on{background:var(--lime);color:#14102e;border-color:transparent}
+#acct label{display:block;font-size:11px;font-weight:700;opacity:.8;margin:6px 0 3px}
+#acct input,#acct textarea{width:100%;box-sizing:border-box;font:600 14px inherit;font-family:inherit;color:var(--tx);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:8px 10px;outline:none}
+#acct input:focus,#acct textarea:focus{border-color:var(--lime)}
+#acct textarea{font:500 11px ui-monospace,monospace;height:62px;resize:none;word-break:break-all}
+#acct .row{display:flex;gap:8px}#acct .row>div{flex:1}
+#acct .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+#acct .btns button{font:800 13px inherit;font-family:inherit;padding:8px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:var(--tx)}
+#acct .btns button.go{background:var(--lime);color:#14102e;border-color:transparent}
+#acct .err{color:var(--coral);font-size:11.5px;min-height:14px;margin-top:4px}
+#acct .pane{display:none}#acct .pane.on{display:block}
+#acct .x{position:absolute;top:10px;right:12px;font:700 13px inherit;font-family:inherit;background:rgba(255,255,255,.1);color:var(--tx);border:0;border-radius:10px;padding:6px 10px;display:none}#acct.mg .x{display:block}
+@media (max-height:420px){#acct .al img{width:80px;height:80px}#acct .ab{padding:12px 14px;gap:12px;grid-template-columns:150px 1fr}}
+#home .chip.me{cursor:pointer;border-color:rgba(215,255,58,.5)}
 #splash{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:radial-gradient(circle at 50% 45%,#1c2747,#070a16 70%);transition:opacity .6s ease}
 #splash.out{opacity:0;pointer-events:none}#splash.gone{display:none}
 #splash img{width:min(58vmin,330px);height:auto;border-radius:50%;box-shadow:0 0 0 6px rgba(255,255,255,.08),0 0 60px rgba(215,255,58,.25),0 20px 50px rgba(0,0,0,.6);animation:spIn 1.1s cubic-bezier(.2,1.25,.4,1) both}
@@ -216,6 +236,19 @@ body.play #shots{display:flex}
 #ov button:focus-visible{outline:3px solid var(--cy);outline-offset:3px}
 @media (prefers-reduced-motion:reduce){#toast.on{animation:none;opacity:1}}
 </style></head><body>
+<div id="acct"><button class="x" id="aClose">Fechar ✕</button><div class="ab"><div class="al"><img src="logo-jvs.png" alt="JVS Games"><b id="aHello">Tênis Open 3D</b><small>Conta JVS Games</small></div><div>
+<div class="pane" id="pNew"><div class="tabs"><button class="on" data-t="pNew">Criar conta</button><button data-t="pRec">Já tenho conta</button></div>
+<h2>Crie sua conta</h2><p>Sua conta guarda bolas de tênis, personagens comprados, avatar, passe e estatísticas.</p>
+<div class="row"><div><label for="aName">Nome do jogador</label><input id="aName" maxlength="16" placeholder="Ex.: Pedro" autocomplete="nickname"></div><div style="flex:.55"><label for="aPin">PIN (4 números)</label><input id="aPin" inputmode="numeric" maxlength="4" placeholder="••••" type="password"></div></div>
+<div class="err" id="aErr1"></div><div class="btns"><button class="go" id="aCreate">Criar conta</button></div></div>
+<div class="pane" id="pRec"><div class="tabs"><button data-t="pNew">Criar conta</button><button class="on" data-t="pRec">Já tenho conta</button></div>
+<h2>Recuperar conta</h2><p>Cole seu código de recuperação (ou abra o arquivo de backup) e digite seu PIN.</p>
+<label for="aCode">Código de recuperação</label><textarea id="aCode" placeholder="JVS1-..."></textarea>
+<div class="row"><div style="flex:.5"><label for="aPin2">PIN</label><input id="aPin2" inputmode="numeric" maxlength="4" type="password" placeholder="••••"></div><div><label>&nbsp;</label><button id="aFileB" style="width:100%;font:700 12px inherit;font-family:inherit;padding:9px;border-radius:10px;border:1px dashed rgba(255,255,255,.3);background:transparent;color:var(--tx)">Abrir arquivo de backup</button><input type="file" id="aFile" accept=".txt,.jvs,text/plain" hidden></div></div>
+<div class="err" id="aErr2"></div><div class="btns"><button class="go" id="aRestore">Entrar na conta</button></div></div>
+<div class="pane" id="pSave"><h2 id="aSaveT">Conta criada!</h2><p>Guarde este <b>código de recuperação</b> e seu PIN. Com eles você recupera tudo em outro celular ou se o navegador for limpo. O código muda conforme você joga: salve de novo de vez em quando.</p>
+<textarea id="aMyCode" readonly></textarea><div class="btns"><button id="aCopy">Copiar código</button><button id="aDown">Baixar backup</button><button id="aSwitch">Trocar de conta</button><button class="go" id="aGo">Entrar no jogo</button></div><div class="err" id="aErr3"></div></div>
+</div></div></div>
 <div id="splash"><img src="logo-jvs.png" alt="JVS Games"><small>apresenta Tênis Open 3D</small></div>
 <canvas id="gl3"></canvas><canvas id="c"></canvas>
 <div id="hud"><div class="sb"><div class="sbt"><span id="lv">Nível 1</span><small id="rl"></small></div><div class="sr"><i id="sv1"></i><span id="p1">Você</span><b class="st" id="ss1"></b><b id="s1">0</b><b class="pt" id="pt1">0</b></div><div class="sr"><i id="sv0"></i><span id="p0">CPU</span><b class="st" id="ss0"></b><b id="s0">0</b><b class="pt" id="pt0">0</b></div></div></div>
@@ -223,7 +256,7 @@ body.play #shots{display:flex}
 <div id="rot"><img src="logo-jvs.png" alt=""><div class="ph"></div><div>Gire o celular para a horizontal</div><small style="opacity:.6;font-weight:500">O jogo funciona apenas no modo paisagem</small></div>
 <div id="home"><div class="lobby">
 <header class="ltop"><div class="logo"><img class="jvs" src="logo-jvs.png" alt="JVS Games"><span><b>Tênis Open 3D</b><small>Monte sua partida e entre em quadra</small></span></div>
-<div class="lchips"><span class="chip balls" id="cBalls" title="Bolas de tênis"></span><span class="chip" id="cWins"></span><span class="chip" id="hBest"></span><span class="musrow"><button id="hMus" class="chip mus" aria-pressed="true">Música</button><button id="hNext" class="chip mus" aria-label="Próxima música">⏭</button></span></div></header>
+<div class="lchips"><span class="chip me" id="cMe" title="Minha conta"></span><span class="chip balls" id="cBalls" title="Bolas de tênis"></span><span class="chip" id="cWins"></span><span class="chip" id="hBest"></span><span class="musrow"><button id="hMus" class="chip mus" aria-pressed="true">Música</button><button id="hNext" class="chip mus" aria-label="Próxima música">⏭</button></span></div></header>
 <nav class="lmodes"><button id="hStart" class="mode go"><b>Jogar</b><span>Partida contra o computador</span></button><button id="hAi" class="mode"><b>IA x IA</b><span>Assista dois tenistas</span></button><button id="hSt" class="mode"><b>Estatísticas</b><span>Seus números</span></button><button id="hPass" class="mode pass"><b>Passe</b><span>Missões e recompensas</span></button><button id="hAv" class="mode avb"><b>Seu avatar</b><span>Crie seu próprio tenista</span></button><button id="hHow" class="mode"><b>Como jogar</b><span>Controles e regras</span></button></nav>
 <section class="lchar"><button id="cBuy" class="buy" hidden></button><div class="cnav"><button id="cPrev" class="cbtn" aria-label="Personagem anterior">‹</button><div class="cinfo"><b id="cName"></b><span id="cDesc"></span></div><button id="cNext" class="cbtn" aria-label="Próximo personagem">›</button></div><div id="cBars"></div><div id="cDots"></div></section>
 <section class="lset"><h3>Configurar partida</h3><div class="opts"><div><span class="lb">Superfície</span><div class="seg" data-k="surf"><button data-v="saibro">Saibro</button><button data-v="dura">Dura</button><button data-v="grama">Grama</button></div></div>
@@ -840,6 +873,31 @@ $('hSt').onclick=()=>{renderStats();$('home').classList.add('stats');$('home').s
 $('stBack').onclick=()=>$('home').classList.remove('stats');
 $('stReset').onclick=()=>{const bt=$('stReset');if(!bt.dataset.c){bt.dataset.c='1';bt.textContent='Toque de novo para confirmar';return}S=JSON.parse(JSON.stringify(STAT0));saveS();renderStats()};$('hBack').onclick=()=>$('home').classList.remove('how');
 myC=CH[charIdx];initWorld();
+
+/* ---- conta ---- */
+let ACC=null;try{ACC=JSON.parse(localStorage.getItem('mtn_acct'))}catch(e){}
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+const accKeys=()=>{const o={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('mtn_'))o[k]=localStorage.getItem(k)}return o};
+function hsh(str){let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(36)}
+function xorB(bytes,pin){const k=new TextEncoder().encode('jvs'+pin+'games');return bytes.map((b2,i)=>b2^k[i%k.length]^(i*31&255))}
+function accCode(){if(!ACC)return'';const data=accKeys(),j=JSON.stringify({v:1,d:data}),by=xorB(new TextEncoder().encode(j),ACC.pin);let bin='';by.forEach(c=>bin+=String.fromCharCode(c));return'JVS1-'+hsh(j)+'-'+btoa(bin)}
+function accDecode(code,pin){code=(code||'').replace(/\s+/g,'');const m=code.match(/^JVS1-([0-9a-z]+)-(.+)$/);if(!m)throw'Código inválido';let bin;try{bin=atob(m[2])}catch(e){throw'Código inválido'}const by=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)by[i]=bin.charCodeAt(i);const j=new TextDecoder().decode(xorB(by,pin));if(hsh(j)!==m[1])throw'PIN incorreto ou código incompleto';return JSON.parse(j)}
+function accPane(id){document.querySelectorAll('#acct .pane').forEach(e=>e.classList.toggle('on',e.id==id));if(id=='pSave')$('aMyCode').value=accCode()}
+function accShow(mode){const a=$('acct');a.classList.add('on');a.classList.toggle('mg',mode=='mg');$('aHello').textContent=ACC?'Olá, '+ACC.name+'!':'Tênis Open 3D';if(mode=='mg'){$('aSaveT').textContent='Minha conta';accPane('pSave')}else accPane(mode||'pNew')}
+function accHide(){$('acct').classList.remove('on')}
+function accChip(){const c=$('cMe');if(c)c.textContent=ACC?'👤 '+ACC.name:'👤 Conta'}
+document.querySelectorAll('#acct .tabs button').forEach(b2=>b2.onclick=()=>accPane(b2.dataset.t));
+$('aPin').oninput=$('aPin2').oninput=e=>e.target.value=e.target.value.replace(/\D/g,'').slice(0,4);
+$('aCreate').onclick=()=>{const n=$('aName').value.trim(),pin=$('aPin').value;if(n.length<2){$('aErr1').textContent='Digite um nome com pelo menos 2 letras.';return}if(!/^\d{4}$/.test(pin)){$('aErr1').textContent='O PIN precisa ter 4 números.';return}
+ ACC={name:n,pin,id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),created:Date.now()};try{localStorage.setItem('mtn_acct',JSON.stringify(ACC))}catch(e){}$('aErr1').textContent='';$('aHello').textContent='Olá, '+n+'!';$('aSaveT').textContent='Conta criada!';accPane('pSave');accChip()};
+$('aRestore').onclick=()=>{try{const pin=$('aPin2').value;if(!/^\d{4}$/.test(pin))throw'Digite seu PIN de 4 números';const o=accDecode($('aCode').value,pin);const d=o.d||{};if(!d.mtn_acct)throw'Código sem conta';
+ Object.keys(accKeys()).forEach(k=>localStorage.removeItem(k));Object.entries(d).forEach(([k,v])=>localStorage.setItem(k,v));$('aErr2').textContent='';toast('Conta recuperada! Carregando…');setTimeout(()=>location.reload(),700)}catch(e){$('aErr2').textContent=typeof e=='string'?e:'Não foi possível recuperar a conta'}};
+$('aFileB').onclick=()=>$('aFile').click();$('aFile').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{const m=t.match(/JVS1-[0-9a-z]+-[A-Za-z0-9+/=]+/);$('aCode').value=m?m[0]:t.trim()})};
+$('aCopy').onclick=()=>{const v=$('aMyCode').value;(navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).then(()=>toast('Código copiado!'),()=>{$('aMyCode').select();document.execCommand('copy');toast('Código copiado!')})};
+$('aDown').onclick=()=>{const v=$('aMyCode').value,bl=new Blob(['Tênis Open 3D — backup da conta de '+ACC.name+'\nGuarde este arquivo e seu PIN.\n\n'+v+'\n'],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download='tenis-open-'+ACC.name.replace(/[^\w-]+/g,'_')+'.txt';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)};
+$('aSwitch').onclick=()=>{$('acct').classList.remove('mg');$('aErr2').textContent='Atenção: recuperar outra conta substitui o progresso deste aparelho. Salve seu código antes.';accPane('pRec')};
+$('aGo').onclick=accHide;$('aClose').onclick=accHide;$('cMe').onclick=()=>accShow('mg');
+accChip();if(!ACC)accShow('pNew');
 (()=>{const sp=$('splash');let done=false;const end=()=>{if(done)return;done=true;sp.classList.add('out');setTimeout(()=>sp.classList.add('gone'),700)};setTimeout(end,2600);sp.addEventListener('pointerdown',e=>{e.stopPropagation();end()})})();
 $('mn').onclick=showHome;
 showHome();
