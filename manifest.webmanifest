@@ -1,6 +1,6 @@
 {
-  "name": "Tênis Open 3D",
-  "short_name": "Tênis Open",
+  "name": "JVS Tennis",
+  "short_name": "JVS Tennis",
   "description": "Jogo de tênis 3D da JVS Games",
   "start_url": "./",
   "scope": "./",

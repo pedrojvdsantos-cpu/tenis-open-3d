@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
-<title>Tênis Open 3D</title>
+<title>JVS Tennis</title>
 <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Tênis Open 3D">
+<meta name="apple-mobile-web-app-title" content="JVS Tennis">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0b1020">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&display=swap" rel="stylesheet">
@@ -240,7 +240,7 @@ body.play #shots{display:flex}
 #ov button:focus-visible{outline:3px solid var(--cy);outline-offset:3px}
 @media (prefers-reduced-motion:reduce){#toast.on{animation:none;opacity:1}}
 </style></head><body>
-<div id="acct"><button class="x" id="aClose">Fechar ✕</button><div class="ab"><div class="al"><img src="logo-jvs.png" alt="JVS Games"><b id="aHello">Tênis Open 3D</b><small>Conta JVS Games</small></div><div>
+<div id="acct"><button class="x" id="aClose">Fechar ✕</button><div class="ab"><div class="al"><img src="logo-jvs.png" alt="JVS Games"><b id="aHello">JVS Tennis</b><small>Conta JVS Games</small></div><div>
 <div class="pane" id="pNew"><div class="tabs"><button class="on" data-t="pNew">Criar conta</button><button data-t="pRec">Já tenho conta</button></div>
 <h2>Crie sua conta</h2><p>Sua conta guarda bolas de tênis, personagens comprados, avatar, passe e estatísticas.</p>
 <div class="row"><div><label for="aName">Nome do jogador</label><input id="aName" maxlength="16" placeholder="Ex.: Pedro" autocomplete="nickname"></div><div style="flex:.55"><label for="aPin">PIN (4 números)</label><input id="aPin" inputmode="numeric" maxlength="4" placeholder="••••" type="password"></div></div>
@@ -253,13 +253,13 @@ body.play #shots{display:flex}
 <div class="pane" id="pSave"><h2 id="aSaveT">Conta criada!</h2><p>Guarde este <b>código de recuperação</b> e seu PIN. Com eles você recupera tudo em outro celular ou se o navegador for limpo. O código muda conforme você joga: salve de novo de vez em quando.</p>
 <textarea id="aMyCode" readonly></textarea><div class="btns"><button id="aCopy">Copiar código</button><button id="aDown">Baixar backup</button><button id="aSwitch">Trocar de conta</button><button class="go" id="aGo">Entrar no jogo</button></div><div class="err" id="aErr3"></div></div>
 </div></div></div>
-<div id="splash"><img src="logo-jvs.png" alt="JVS Games"><small>apresenta Tênis Open 3D</small><button id="spGo">Toque para entrar</button></div><canvas id="intro"></canvas>
+<div id="splash"><img src="logo-jvs.png" alt="JVS Games"><small>apresenta JVS Tennis</small><button id="spGo">Toque para entrar</button></div><canvas id="intro"></canvas>
 <canvas id="gl3"></canvas><canvas id="c"></canvas>
 <div id="hud"><div class="sb"><div class="sbt"><span id="lv">Nível 1</span><small id="rl"></small></div><div class="sr"><i id="sv1"></i><span id="p1">Você</span><b class="st" id="ss1"></b><b id="s1">0</b><b class="pt" id="pt1">0</b></div><div class="sr"><i id="sv0"></i><span id="p0">CPU</span><b class="st" id="ss0"></b><b id="s0">0</b><b class="pt" id="pt0">0</b></div></div></div>
 <div id="toast"></div><div id="chant" aria-live="polite"></div><div id="win" aria-hidden="true"></div><div id="hint"></div>
 <div id="rot"><img src="logo-jvs.png" alt=""><div class="ph"></div><div>Gire o celular para a horizontal</div><small style="opacity:.6;font-weight:500">O jogo funciona apenas no modo paisagem</small></div>
 <div id="home"><div class="lobby">
-<header class="ltop"><div class="logo"><img class="jvs" src="logo-jvs.png" alt="JVS Games"><span><b>Tênis Open 3D</b><small>Monte sua partida e entre em quadra</small></span></div>
+<header class="ltop"><div class="logo"><img class="jvs" src="logo-jvs.png" alt="JVS Games"><span><b>JVS Tennis</b><small>Monte sua partida e entre em quadra</small></span></div>
 <div class="lchips"><span class="chip me" id="cMe" title="Minha conta"></span><span class="chip balls" id="cBalls" title="Bolas de tênis"></span><span class="chip" id="cWins"></span><span class="chip" id="hBest"></span><span class="musrow"><button id="hMus" class="chip mus" aria-pressed="true">Música</button><button id="hNext" class="chip mus" aria-label="Próxima música">⏭</button></span></div></header>
 <nav class="lmodes"><button id="hStart" class="mode go"><b>Jogar</b><span>Partida contra o computador</span></button><button id="hAi" class="mode"><b>IA x IA</b><span>Assista dois tenistas</span></button><button id="hSt" class="mode"><b>Estatísticas</b><span>Seus números</span></button><button id="hPass" class="mode pass"><b>Passe</b><span>Missões e recompensas</span></button><button id="hAv" class="mode avb"><b>Seu avatar</b><span>Crie seu próprio tenista</span></button><button id="hHow" class="mode"><b>Como jogar</b><span>Controles e regras</span></button></nav>
 <section class="lchar"><button id="cBuy" class="buy" hidden></button><div class="cnav"><button id="cPrev" class="cbtn" aria-label="Personagem anterior">‹</button><div class="cinfo"><b id="cName"></b><span id="cDesc"></span></div><button id="cNext" class="cbtn" aria-label="Próximo personagem">›</button></div><div id="cBars"></div><div id="cDots"></div></section>
@@ -522,8 +522,8 @@ function initWorld(){
  const strap=new THREE.Mesh(new THREE.BoxGeometry(.05,.9,.02),new THREE.MeshStandardMaterial({color:'#f4f4f4'}));strap.position.set(0,.46,0);scene.add(strap);
  // paredes com faixas
  const wm=(txt,bg)=>new THREE.MeshStandardMaterial({map:bannerTex(txt,bg),roughness:.9});
- const fw=new THREE.Mesh(new THREE.PlaneGeometry(40,2.2),wm('TÊNIS OPEN JVS','#0f3b2e'));fw.position.set(0,1.1,-19.5);scene.add(fw);
- const bw=new THREE.Mesh(new THREE.PlaneGeometry(40,2.2),wm('TÊNIS OPEN JVS','#0f3b2e'));bw.position.set(0,1.1,19.5);bw.rotation.y=Math.PI;scene.add(bw);
+ const fw=new THREE.Mesh(new THREE.PlaneGeometry(40,2.2),wm('JVS TENNIS','#0f3b2e'));fw.position.set(0,1.1,-19.5);scene.add(fw);
+ const bw=new THREE.Mesh(new THREE.PlaneGeometry(40,2.2),wm('JVS TENNIS','#0f3b2e'));bw.position.set(0,1.1,19.5);bw.rotation.y=Math.PI;scene.add(bw);
  for(const sd of[-1,1]){const w=new THREE.Mesh(new THREE.PlaneGeometry(40,2.2),wm('JVS GAMES','#123a5c'));w.position.set(sd*12,1.1,0);w.rotation.y=-sd*Math.PI/2;scene.add(w)}
  buildStands();
  // refletores (noite)
@@ -897,7 +897,7 @@ function xorB(bytes,pin){const k=new TextEncoder().encode('jvs'+pin+'games');ret
 function accCode(){if(!ACC)return'';const data=accKeys(),j=JSON.stringify({v:1,d:data}),by=xorB(new TextEncoder().encode(j),ACC.pin);let bin='';by.forEach(c=>bin+=String.fromCharCode(c));return'JVS1-'+hsh(j)+'-'+btoa(bin)}
 function accDecode(code,pin){code=(code||'').replace(/\s+/g,'');const m=code.match(/^JVS1-([0-9a-z]+)-(.+)$/);if(!m)throw'Código inválido';let bin;try{bin=atob(m[2])}catch(e){throw'Código inválido'}const by=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)by[i]=bin.charCodeAt(i);const j=new TextDecoder().decode(xorB(by,pin));if(hsh(j)!==m[1])throw'PIN incorreto ou código incompleto';return JSON.parse(j)}
 function accPane(id){document.querySelectorAll('#acct .pane').forEach(e=>e.classList.toggle('on',e.id==id));if(id=='pSave')$('aMyCode').value=accCode()}
-function accShow(mode){const a=$('acct');a.classList.add('on');a.classList.toggle('mg',mode=='mg');$('aHello').textContent=ACC?'Olá, '+ACC.name+'!':'Tênis Open 3D';if(mode=='mg'){$('aSaveT').textContent='Minha conta';accPane('pSave')}else accPane(mode||'pNew')}
+function accShow(mode){const a=$('acct');a.classList.add('on');a.classList.toggle('mg',mode=='mg');$('aHello').textContent=ACC?'Olá, '+ACC.name+'!':'JVS Tennis';if(mode=='mg'){$('aSaveT').textContent='Minha conta';accPane('pSave')}else accPane(mode||'pNew')}
 function accHide(){$('acct').classList.remove('on')}
 function accChip(){const c=$('cMe');if(c)c.textContent=ACC?'👤 '+ACC.name:'👤 Conta'}
 document.querySelectorAll('#acct .tabs button').forEach(b2=>b2.onclick=()=>accPane(b2.dataset.t));
@@ -908,7 +908,7 @@ $('aRestore').onclick=()=>{try{const pin=$('aPin2').value;if(!/^\d{4}$/.test(pin
  Object.keys(accKeys()).forEach(k=>localStorage.removeItem(k));Object.entries(d).forEach(([k,v])=>localStorage.setItem(k,v));$('aErr2').textContent='';toast('Conta recuperada! Carregando…');setTimeout(()=>location.reload(),700)}catch(e){$('aErr2').textContent=typeof e=='string'?e:'Não foi possível recuperar a conta'}};
 $('aFileB').onclick=()=>$('aFile').click();$('aFile').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{const m=t.match(/JVS1-[0-9a-z]+-[A-Za-z0-9+/=]+/);$('aCode').value=m?m[0]:t.trim()})};
 $('aCopy').onclick=()=>{const v=$('aMyCode').value;(navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).then(()=>toast('Código copiado!'),()=>{$('aMyCode').select();document.execCommand('copy');toast('Código copiado!')})};
-$('aDown').onclick=()=>{const v=$('aMyCode').value,bl=new Blob(['Tênis Open 3D — backup da conta de '+ACC.name+'\nGuarde este arquivo e seu PIN.\n\n'+v+'\n'],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download='tenis-open-'+ACC.name.replace(/[^\w-]+/g,'_')+'.txt';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)};
+$('aDown').onclick=()=>{const v=$('aMyCode').value,bl=new Blob(['JVS Tennis — backup da conta de '+ACC.name+'\nGuarde este arquivo e seu PIN.\n\n'+v+'\n'],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download='jvs-tennis-'+ACC.name.replace(/[^\w-]+/g,'_')+'.txt';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)};
 $('aSwitch').onclick=()=>{$('acct').classList.remove('mg');$('aErr2').textContent='Atenção: recuperar outra conta substitui o progresso deste aparelho. Salve seu código antes.';accPane('pRec')};
 $('aGo').onclick=accHide;$('aClose').onclick=accHide;$('cMe').onclick=()=>accShow('mg');
 accChip();if(!ACC)accShow('pNew');
@@ -956,7 +956,7 @@ function runIntro(done){const cv2=$('intro'),x=cv2.getContext('2d'),dpr=Math.min
    x.fillStyle='rgba(4,6,15,'+Math.min(.65,E(1.9,2.3,T)*.65)+')';x.fillRect(-20,-20,Wd+40,Hd+40);
    const dtc=T-1.85;conf.forEach(c=>{const px=Wd/2+c[0]*dtc,py=Hd/2+c[1]*dtc+520*dtc*dtc;if(c[4])ball(px,py,c[3]*1.2,dtc*8+c[2]);else{x.fillStyle='hsl('+c[2]+',90%,60%)';x.save();x.translate(px,py);x.rotate(dtc*9+c[2]);x.fillRect(-c[3]/2,-c[3]/4,c[3],c[3]/2);x.restore()}});
    const ls=eb(E(1.9,2.35,T)),R2=Math.min(Wd,Hd)*.24*ls;if(logo.complete&&R2>0){x.save();x.shadowColor='rgba(215,255,58,.6)';x.shadowBlur=40;x.beginPath();x.arc(Wd/2,Hd*.42,R2,0,7);x.fillStyle='#fff';x.fill();x.restore();x.save();x.beginPath();x.arc(Wd/2,Hd*.42,R2*.96,0,7);x.clip();x.drawImage(logo,Wd/2-R2,Hd*.42-R2,R2*2,R2*2);x.restore()}
-   const ts=E(2.25,2.55,T);if(ts>0){const fs=Math.min(Wd*.07,Hd*.11);x.save();x.translate(Wd/2,Hd*.42+Math.min(Wd,Hd)*.24+fs*1.05);x.scale(1+(1-eo(ts))*1.8,1+(1-eo(ts))*1.8);x.globalAlpha=ts;x.font='900 '+fs+'px "Bricolage Grotesque",system-ui,sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillStyle='#d7ff3a';x.shadowColor='rgba(0,0,0,.6)';x.shadowBlur=14;x.fillText('TÊNIS OPEN 3D',0,0);x.restore()}
+   const ts=E(2.25,2.55,T);if(ts>0){const fs=Math.min(Wd*.07,Hd*.11);x.save();x.translate(Wd/2,Hd*.42+Math.min(Wd,Hd)*.24+fs*1.05);x.scale(1+(1-eo(ts))*1.8,1+(1-eo(ts))*1.8);x.globalAlpha=ts;x.font='900 '+fs+'px "Bricolage Grotesque",system-ui,sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillStyle='#d7ff3a';x.shadowColor='rgba(0,0,0,.6)';x.shadowBlur=14;x.fillText('JVS TENNIS',0,0);x.restore()}
   }
   const out=E(3.9,4.4,T);if(out>0){x.fillStyle='rgba(4,6,15,'+out+')';x.fillRect(-20,-20,Wd+40,Hd+40)}
   if(T<4.4&&!skip)requestAnimationFrame(frame);else{cv2.classList.remove('on');removeEventListener('resize',rsz);done()}}
