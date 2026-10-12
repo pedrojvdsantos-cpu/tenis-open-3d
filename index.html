@@ -2,6 +2,14 @@
 <html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <title>Tênis Open 3D</title>
+<link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tênis Open 3D">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0b1020">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#0d1226;--lime:#d7ff3a;--coral:#ff5d73;--cy:#4de1ff;--tx:#f4f0ff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -160,6 +168,14 @@ body.play #shots{display:flex}
 @media (max-width:520px){#shots{gap:6px;right:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 86px)}#hint{left:12px!important;bottom:calc(env(safe-area-inset-bottom,0px) + 222px)}#shots button{width:56px;height:56px;font-size:13px}#shots .sp{width:62px;height:62px}}
 #chant{position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 54px);text-align:center;font:800 17px 'Bricolage Grotesque',system-ui,sans-serif;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.7);pointer-events:none;opacity:0;transition:opacity .35s;z-index:3;padding:0 12px}
 #chant.on{opacity:1}#chant b{color:var(--lime)}#chant small{display:block;font-size:11px;font-weight:600;opacity:.75}
+#splash{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:radial-gradient(circle at 50% 45%,#1c2747,#070a16 70%);transition:opacity .6s ease}
+#splash.out{opacity:0;pointer-events:none}#splash.gone{display:none}
+#splash img{width:min(58vmin,330px);height:auto;border-radius:50%;box-shadow:0 0 0 6px rgba(255,255,255,.08),0 0 60px rgba(215,255,58,.25),0 20px 50px rgba(0,0,0,.6);animation:spIn 1.1s cubic-bezier(.2,1.25,.4,1) both}
+#splash small{font:600 13px 'Bricolage Grotesque',system-ui,sans-serif;color:#cfd6ea;opacity:0;animation:spTx .6s .9s ease forwards}
+@keyframes spIn{0%{transform:scale(.6) rotate(-12deg);opacity:0}100%{transform:none;opacity:1}}
+@keyframes spTx{to{opacity:.8}}
+@media (prefers-reduced-motion:reduce){#splash img,#splash small{animation:none;opacity:1}}
+.logo img.jvs{width:38px;height:38px;border-radius:50%;box-shadow:0 2px 10px rgba(0,0,0,.4)}
 #ov{z-index:6}
 #ov{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;background:rgba(13,18,38,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 #ov.off{display:none}
@@ -169,12 +185,13 @@ body.play #shots{display:flex}
 #ov button:focus-visible{outline:3px solid var(--cy);outline-offset:3px}
 @media (prefers-reduced-motion:reduce){#toast.on{animation:none;opacity:1}}
 </style></head><body>
+<div id="splash"><img src="logo-jvs.png" alt="JVS Games"><small>apresenta Tênis Open 3D</small></div>
 <canvas id="gl3"></canvas><canvas id="c"></canvas>
 <div id="hud"><div class="sb"><div class="sbt"><span id="lv">Nível 1</span><small id="rl"></small></div><div class="sr"><i id="sv1"></i><span id="p1">Você</span><b class="st" id="ss1"></b><b id="s1">0</b><b class="pt" id="pt1">0</b></div><div class="sr"><i id="sv0"></i><span id="p0">CPU</span><b class="st" id="ss0"></b><b id="s0">0</b><b class="pt" id="pt0">0</b></div></div></div>
 <div id="toast"></div><div id="chant" aria-live="polite"></div><div id="win" aria-hidden="true"></div><div id="hint"></div>
 <div id="rot">Gire o celular para jogar na horizontal</div>
 <div id="home"><div class="lobby">
-<header class="ltop"><div class="logo"><i class="ball"></i><span><b>Tênis Open 3D</b><small>Monte sua partida e entre em quadra</small></span></div>
+<header class="ltop"><div class="logo"><img class="jvs" src="logo-jvs.png" alt="JVS Games"><span><b>Tênis Open 3D</b><small>Monte sua partida e entre em quadra</small></span></div>
 <div class="lchips"><span class="chip" id="cWins"></span><span class="chip" id="hBest"></span><span class="musrow"><button id="hMus" class="chip mus" aria-pressed="true">Música</button><button id="hNext" class="chip mus" aria-label="Próxima música">⏭</button></span></div></header>
 <nav class="lmodes"><button id="hStart" class="mode go"><b>Jogar</b><span>Partida contra o computador</span></button><button id="hAi" class="mode"><b>IA x IA</b><span>Assista dois tenistas</span></button><button id="hSt" class="mode"><b>Estatísticas</b><span>Seus números</span></button><button id="hHow" class="mode"><b>Como jogar</b><span>Controles e regras</span></button></nav>
 <section class="lchar"><div class="cnav"><button id="cPrev" class="cbtn" aria-label="Personagem anterior">‹</button><div class="cinfo"><b id="cName"></b><span id="cDesc"></span></div><button id="cNext" class="cbtn" aria-label="Próximo personagem">›</button></div><div id="cBars"></div><div id="cDots"></div></section>
@@ -705,6 +722,7 @@ $('hSt').onclick=()=>{renderStats();$('home').classList.add('stats');$('home').s
 $('stBack').onclick=()=>$('home').classList.remove('stats');
 $('stReset').onclick=()=>{const bt=$('stReset');if(!bt.dataset.c){bt.dataset.c='1';bt.textContent='Toque de novo para confirmar';return}S=JSON.parse(JSON.stringify(STAT0));saveS();renderStats()};$('hBack').onclick=()=>$('home').classList.remove('how');
 myC=CH[charIdx];initWorld();
+(()=>{const sp=$('splash');let done=false;const end=()=>{if(done)return;done=true;sp.classList.add('out');setTimeout(()=>sp.classList.add('gone'),700)};setTimeout(end,2600);sp.addEventListener('pointerdown',e=>{e.stopPropagation();end()})})();
 $('mn').onclick=showHome;
 showHome();
 hud();requestAnimationFrame(loop);
