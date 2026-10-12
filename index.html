@@ -114,7 +114,7 @@ canvas{position:fixed;inset:0;display:block}
 #home .mus[aria-pressed=false]{opacity:.6}
 #home{padding:0;background:radial-gradient(ellipse 42% 64% at 50% 55%,rgba(7,10,22,0),rgba(7,10,22,.3) 70%,rgba(7,10,22,.6))}
 #home{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
-body:not(.play) #hud{display:none}
+body:not(.play) #hud,body:not(.play) #pad,body:not(.play) #shots{display:none!important}
 body.play::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse 75% 70% at 50% 50%,rgba(0,0,0,0) 60%,rgba(0,0,0,.28))}
 #home.how .lobby,#home.stats .lobby,#home.avatar .lobby,#home.pass .lobby,#home.online .lobby,#home.avs .lobby,#home.train .lobby{display:none}
 .trp{display:none;flex-direction:column;gap:8px;width:min(860px,100%);margin:auto;text-align:left}#home.train .trp{display:flex}#home.train{padding:14px max(14px,calc(env(safe-area-inset-left,0px) + 6px))}
@@ -788,7 +788,7 @@ function R_apply(r,q){
 function updateScene(dt){updateCrowd(dt);
  const pa=P(ai.x+ai.ox,-.06+ai.od+ai.y),pm=P(me.x+me.ox,1.06+me.od-me.y);
  if(rigs[0]){animRig(rigs[0],dt,pa.x,pa.z,ai.sw,ai.k,0);rigs[0].g.position.set(pa.x,0,pa.z)}
- const lob=st=='menu'&&onHome();if(rigs[0])rigs[0].g.visible=!lob;
+ const lob=st=='menu'&&onHome();if(rigs[0])rigs[0].g.visible=!lob;if(rigs[1]){const hc=$('home').classList;rigs[1].g.visible=!(lob&&['how','stats','pass','online','avs','train'].some(c=>hc.contains(c)))}
  if(rigs[1]&&lob){const ph2=t%4.5,sw2=ph2<.34?1-ph2/.34:0;animRig(rigs[1],dt,0,8,sw2,Math.abs(Math.floor(t/4.5))%2,1);rigs[1].g.position.set(0,0,8);rigs[1].g.rotation.y=$('home').classList.contains('avatar')?avRot:Math.sin(t*.4)*.35}
  else if(rigs[1]){rigs[1].g.rotation.y=Math.PI;animRig(rigs[1],dt,pm.x,pm.z,me.sw,me.k,1);rigs[1].g.position.set(pm.x,0,pm.z)}
  const showB=st!='intro'&&st!='menu';ballM.visible=blob.visible=showB;
@@ -967,7 +967,7 @@ $('cPrev').onclick=()=>pickChar(-1);$('cNext').onclick=()=>pickChar(1);
 const segs=[...document.querySelectorAll('.seg')];
 function setChip(){renderChar();try{$('hAvsS').textContent='Tenista: '+CH[charIdx].n}catch(e){}segs.forEach(sg=>[...sg.children].forEach(bt=>bt.classList.toggle('on',String(cfg[sg.dataset.k])==bt.dataset.v)))}
 segs.forEach(sg=>[...sg.children].forEach(bt=>bt.onclick=()=>{const v=bt.dataset.v;cfg[sg.dataset.k]=isNaN(+v)?v:+v;sync();setChip();saveCfg();if(sg.dataset.k=='surf'||sg.dataset.k=='tod')setupWorld();if(sg.dataset.k=='grunt')setTimeout(()=>sfxGrunt(myC,.9,1),40)}));
-function showHome(){stopChant();TRAIN=false;TC.ch=null;try{trainHud();if(window.tgtM)tgtM.visible=false}catch(e){}if(NET.on||NET.ws)netLeave(true);if(aiVsAi){aiVsAi=false;document.body.classList.remove('ai');if(Sbak){S=Sbak;Sbak=null}joy=joyY=0}musStart();st='menu';SW=[null,null];frozen=false;$('hint').textContent='';document.body.classList.remove('play');$('home').classList.remove('off','how','stats','avatar','pass','avs','train');$('hBest').textContent='Melhor nível '+best;$('cWins').textContent=S.wins+(S.wins==1?' vitória':' vitórias');setChip()}
+function showHome(){stopChant();TRAIN=false;TC.ch=null;try{trainHud();if(window.tgtM)tgtM.visible=false}catch(e){}if(NET.on||NET.ws)netLeave(true);if(aiVsAi){aiVsAi=false;document.body.classList.remove('ai');if(Sbak){S=Sbak;Sbak=null}joy=joyY=0}musStart();st='menu';SW=[null,null];frozen=false;$('hint').textContent='';document.body.classList.remove('play');$('home').classList.remove('off','how','stats','avatar','pass','avs','train','online','onwait');$('hBest').textContent='Melhor nível '+best;$('cWins').textContent=S.wins+(S.wins==1?' vitória':' vitórias');setChip()}
 MUS.on=cfg.mus!==false;function setMusBtn(){const bt=$('hMus');bt.textContent=MUS.on?'♪ '+SG().n:'♪ Música desligada';bt.setAttribute('aria-pressed',MUS.on);$('hNext').style.display=MUS.on?'':'none'}setMusBtn();
 $('hNext').onclick=()=>{if(!MUS.on)return;musStop();setTimeout(musStart,150)};
 $('hMus').onclick=()=>{MUS.on=!MUS.on;cfg.mus=MUS.on;saveCfg();setMusBtn();if(MUS.on)musStart();else musStop()};
