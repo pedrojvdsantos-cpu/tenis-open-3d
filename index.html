@@ -20,13 +20,13 @@ canvas{position:fixed;inset:0;display:block}
 .sb{background:rgba(9,13,30,.8);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);border-radius:10px;overflow:hidden;min-width:196px;font-variant-numeric:tabular-nums;box-shadow:0 6px 18px rgba(0,0,0,.35)}
 .sbt{display:flex;justify-content:space-between;gap:10px;padding:2px 8px;font-size:10px;background:rgba(255,255,255,.07);opacity:.85}
 .sbt small{color:var(--lime)}
-.sr{display:grid;grid-template-columns:8px 1fr auto 22px 34px;align-items:stretch;column-gap:6px;padding-left:8px;font-size:13px;line-height:22px}
+.sr{display:grid;grid-template-columns:8px 1fr 40px;align-items:stretch;column-gap:6px;padding-left:8px;font-size:13px;line-height:22px}
 .sr+.sr{border-top:1px solid rgba(255,255,255,.1)}
 .sr i{align-self:center;width:6px;height:6px;border-radius:50%}
 .sr i.on{background:var(--lime);box-shadow:0 0 6px var(--lime)}
 .sr span{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px}
 .sr b{text-align:center;font-weight:800}
-.sr .st{opacity:.7;font-weight:600;min-width:0}
+.sr .st,#s0,#s1{display:none}
 .sr .pt{background:var(--lime);color:#14102e}
 .side,#mid{background:rgba(255,255,255,.08);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.14);border-radius:0 0 14px 14px;border-top:0!important;padding:1px 14px 3px;text-align:center;line-height:1.05}
 .side span,#mid span{font-size:12px;opacity:.7;display:block}
@@ -226,12 +226,10 @@ body.play #shots{display:flex}
 <section class="lset"><h3>Configurar partida</h3><div class="opts"><div><span class="lb">Superfície</span><div class="seg" data-k="surf"><button data-v="saibro">Saibro</button><button data-v="dura">Dura</button><button data-v="grama">Grama</button></div></div>
 <div><span class="lb">Horário</span><div class="seg" data-k="tod"><button data-v="dia">Dia</button><button data-v="noite">Noite</button></div></div>
 <div><span class="lb">Dificuldade</span><div class="seg" data-k="l"><button data-v="1">Iniciante</button><button data-v="3">Amador</button><button data-v="5">Profissional</button></div></div>
-<div><span class="lb">Games por set</span><div class="seg" data-k="g"><button data-v="4">4</button><button data-v="6">6</button></div></div>
-<div><span class="lb">Formato</span><div class="seg" data-k="fmt"><button data-v="pts6">6 pontos</button><button data-v="tenis">Tênis completo</button></div></div>
-<div><span class="lb">Partida</span><div class="seg" data-k="sets"><button data-v="1">1 set</button><button data-v="3">Melhor de 3</button></div></div></div></section>
+<div><span class="lb">Gemido</span><div class="seg" data-k="grunt"><button data-v="ain">Ainnn</button><button data-v="ah">Ahh</button><button data-v="uh">Uh!</button><button data-v="hia">Hiiá</button><button data-v="eh">Éhh</button><button data-v="off">Sem gemido</button></div></div></div></section>
 </div>
 <div class="avp" aria-label="Editor de avatar"><div class="avhead"><h2>Seu avatar</h2><button id="avBack" class="chip">Voltar</button></div><div class="avbody" id="avBody"></div><div class="avfoot"><button id="avRand" class="sec">Aleatório</button><button id="avSave" class="go">Salvar avatar</button></div></div>
-<div class="howp"><h2>Como jogar</h2><ul><li>Joystick no canto: move o jogador para os lados e, empurrando para cima, sobe até a rede.</li><li>Na rede, quando a bola vier alta (lob), arraste para baixo e solte para dar um smash.</li><li>Quando a bola chega, o tempo para: mova o jogador, arraste na tela para mirar e solte para bater.</li><li>Cada personagem tem velocidade, potência e precisão diferentes.</li><li>Na tela inicial você escolhe superfície (saibro, dura ou grama), dia ou noite, dificuldade e formato da partida.</li><li>Golpes escondidos nos botões: segure Spin e arraste para baixo para um lob; segure Slice e arraste para baixo para um drop shot. Com bola alta perto da rede, Voleio vira smash. O nome do golpe aparece em cima da mira.</li><li>Para bater, segure um botão de golpe, arraste para mirar e solte. A mira muda de cor e de distância conforme o golpe. Slice dá uma bola curta e baixa, Spin é a batida normal com efeito e Voleio, quando você está na rede, bate a bola antes de quicar com mais força.</li><li>Bola do lado esquerdo do jogador é backhand, do direito é forehand.</li><li>Formato padrão: vence quem fizer 6 pontos primeiro. Em Configurar partida você pode escolher o tênis completo (15, 30, 40, games e sets).</li><li>Cada vitória vale 10 bolas de tênis. Veja missões e tenistas premium no Passe.</li><li>No saque, mire na caixa cruzada. Você tem duas tentativas.</li></ul><button id="hBack" class="sec">Voltar</button></div>
+<div class="howp"><h2>Como jogar</h2><ul><li>Joystick no canto: move o jogador para os lados e, empurrando para cima, sobe até a rede.</li><li>Na rede, quando a bola vier alta (lob), arraste para baixo e solte para dar um smash.</li><li>Quando a bola chega, o tempo para: mova o jogador, arraste na tela para mirar e solte para bater.</li><li>Cada personagem tem velocidade, potência e precisão diferentes.</li><li>Na tela inicial você escolhe superfície (saibro, dura ou grama), dia ou noite, dificuldade e formato da partida.</li><li>Golpes escondidos nos botões: segure Spin e arraste para baixo para um lob; segure Slice e arraste para baixo para um drop shot. Com bola alta perto da rede, Voleio vira smash. O nome do golpe aparece em cima da mira.</li><li>Para bater, segure um botão de golpe, arraste para mirar e solte. A mira muda de cor e de distância conforme o golpe. Slice dá uma bola curta e baixa, Spin é a batida normal com efeito e Voleio, quando você está na rede, bate a bola antes de quicar com mais força.</li><li>Bola do lado esquerdo do jogador é backhand, do direito é forehand.</li><li>Placar de 0 a 6: vence quem fizer 6 pontos primeiro.</li><li>Em Configurar partida você escolhe o tipo de gemido dos tenistas.</li><li>Cada vitória vale 10 bolas de tênis. Veja missões e tenistas premium no Passe.</li><li>No saque, mire na caixa cruzada. Você tem duas tentativas.</li></ul><button id="hBack" class="sec">Voltar</button></div>
 <div class="passp"><div class="avhead"><h2>Passe</h2><span class="chip balls" id="pBalls"></span></div><div id="passBody"></div><div class="strow"><button id="pBack" class="sec">Voltar</button></div></div>
 <div class="statp"><h2>Suas estatísticas</h2><div id="stBody"></div><div class="strow"><button id="stBack" class="sec">Voltar</button><button id="stReset" class="sec">Zerar estatísticas</button></div></div></div>
 <button id="mn">Menu</button>
@@ -295,19 +293,22 @@ function sNz(T,dur,vol,type,fr,q,o){const s2=ac.createBufferSource(),fl=ac.creat
 function sOs(T,f0,f1,dur,vol,type,o){const os=ac.createOscillator(),g=ac.createGain();os.type=type;os.frequency.setValueAtTime(f0,T);os.frequency.exponentialRampToValueAtTime(f1,T+dur);os.connect(g);g.connect(o);g.gain.setValueAtTime(vol,T);g.gain.exponentialRampToValueAtTime(.0008,T+dur);os.start(T);os.stop(T+dur+.02)}
 function sfxHit(pw,v){const o=sfxOut();if(!o)return;const T=ac.currentTime;v=v||1;
  sNz(T,.012,.55*v,'highpass',3500,.7,o);sNz(T,.07,(.35+.4*pw)*v,'bandpass',1250+pw*500,1.3,o);sOs(T,240+pw*80,110,.08,(.3+.3*pw)*v,'sine',o);sOs(T,1350,1180,.06,.07*v,'triangle',o)}
-function sfxGrunt(ch,pw,v){const o=sfxOut();if(!o)return;const T=ac.currentTime+.01,fem=ch&&ch.fem,f0=(fem?185:88)*rnd(.92,1.08)*(1+pw*.1),dur=rnd(1.1,1.5)*(.85+pw*.4),k=(fem?1.12:.95)*rnd(.96,1.04);
+const GRUNTS={
+ ain:{d:[1.1,1.5],p:[1.05,1.18,.8],lp:1,TR:[[[720,0],[330,.22],[270,.42]],[[1150,0],[2150,.22],[1350,.45]],[[2450,0],[2900,.22],[2500,.45]]],GN:[[1,.9,1.1],[.6,.6,.18],[.25,.3,.05]]},
+ ah:{d:[.55,.8],p:[1.12,1.0,.78],TR:[[[760,0],[740,.5],[700,1]],[[1180,0],[1150,.5],[1100,1]],[[2500,0],[2450,.5],[2400,1]]],GN:[[1,1,1],[.65,.6,.55],[.25,.22,.2]]},
+ uh:{d:[.22,.34],p:[1.2,1.05,.85],TR:[[[380,0],[360,.5],[340,1]],[[850,0],[820,.5],[800,1]],[[2300,0],[2250,.5],[2200,1]]],GN:[[1.15,1,1],[.5,.45,.4],[.15,.12,.1]]},
+ hia:{d:[.6,.85],p:[1.25,1.05,.9],TR:[[[300,0],[300,.2],[780,.38]],[[2250,0],[2200,.2],[1200,.38]],[[2950,0],[2900,.2],[2500,.38]]],GN:[[.9,.9,1.1],[.6,.6,.6],[.25,.25,.22]]},
+ eh:{d:[.8,1.1],p:[1.08,1.12,.8],TR:[[[500,0],[480,.5],[460,1]],[[1850,0],[1800,.5],[1750,1]],[[2600,0],[2550,.5],[2500,1]]],GN:[[1,1,1],[.55,.5,.45],[.25,.2,.18]]}};
+function sfxGrunt(ch,pw,v){const gt=GRUNTS[cfg.grunt]||(cfg.grunt=='off'?null:GRUNTS.ain);if(!gt)return;const o=sfxOut();if(!o)return;const T=ac.currentTime+.01,fem=ch&&ch.fem,f0=(fem?185:88)*rnd(.92,1.08)*(1+pw*.1),dur=rnd(gt.d[0],gt.d[1])*(.85+pw*.4),k=(fem?1.12:.95)*rnd(.96,1.04);
  const src=ac.createOscillator(),vib=ac.createOscillator(),vg=ac.createGain(),env=ac.createGain(),lp=ac.createBiquadFilter();src.type='sawtooth';
- src.frequency.setValueAtTime(f0*1.05,T);src.frequency.linearRampToValueAtTime(f0*1.18,T+dur*.18);src.frequency.exponentialRampToValueAtTime(f0*.8,T+dur);
+ src.frequency.setValueAtTime(f0*gt.p[0],T);src.frequency.linearRampToValueAtTime(f0*gt.p[1],T+dur*.18);src.frequency.exponentialRampToValueAtTime(f0*gt.p[2],T+dur);
  vib.frequency.value=rnd(5,6.5);vg.gain.value=f0*.025;vib.connect(vg);vg.connect(src.frequency);
- lp.type='lowpass';lp.frequency.setValueAtTime(4200,T);lp.frequency.setValueAtTime(4200,T+dur*.3);lp.frequency.linearRampToValueAtTime(1100,T+dur*.45);lp.connect(env);
- env.gain.setValueAtTime(.0001,T);env.gain.exponentialRampToValueAtTime(1.6*v*(.7+pw*.3),T+.03);env.gain.linearRampToValueAtTime(1.25*v*(.7+pw*.3),T+dur*.3);env.gain.linearRampToValueAtTime(1.0*v*(.7+pw*.3),T+dur*.7);env.gain.exponentialRampToValueAtTime(.0008,T+dur);env.connect(o);
- // "a" -> "i" -> "nnn"
- const TR=[[[720,0],[330,.22],[270,.42]],[[1150,0],[2150,.22],[1350,.45]],[[2450,0],[2900,.22],[2500,.45]]],GN=[[1,.9,1.1],[.6,.6,.18],[.25,.3,.05]];
- TR.forEach((tr,i)=>{const bp=ac.createBiquadFilter(),g=ac.createGain();bp.type='bandpass';bp.Q.value=[7,10,12][i];bp.frequency.setValueAtTime(tr[0][0]*k,T);bp.frequency.linearRampToValueAtTime(tr[1][0]*k,T+dur*tr[1][1]);bp.frequency.linearRampToValueAtTime(tr[2][0]*k,T+dur*tr[2][1]);
-  g.gain.setValueAtTime(GN[i][0],T);g.gain.linearRampToValueAtTime(GN[i][1],T+dur*.25);g.gain.linearRampToValueAtTime(GN[i][2],T+dur*.45);src.connect(bp);bp.connect(g);g.connect(lp)});
+ lp.type='lowpass';lp.frequency.setValueAtTime(4200,T);if(gt.lp){lp.frequency.setValueAtTime(4200,T+dur*.3);lp.frequency.linearRampToValueAtTime(1100,T+dur*.45)}lp.connect(env);
+ const pk=1.6*v*(.7+pw*.3);env.gain.setValueAtTime(.0001,T);env.gain.exponentialRampToValueAtTime(pk,T+(gt.d[1]<.4?.012:.03));env.gain.linearRampToValueAtTime(pk*.8,T+dur*.3);env.gain.linearRampToValueAtTime(pk*.62,T+dur*.7);env.gain.exponentialRampToValueAtTime(.0008,T+dur);env.connect(o);
+ gt.TR.forEach((tr,i)=>{const bp=ac.createBiquadFilter(),g=ac.createGain();bp.type='bandpass';bp.Q.value=[7,10,12][i];bp.frequency.setValueAtTime(tr[0][0]*k,T);bp.frequency.linearRampToValueAtTime(tr[1][0]*k,T+dur*tr[1][1]);bp.frequency.linearRampToValueAtTime(tr[2][0]*k,T+dur*tr[2][1]);
+  g.gain.setValueAtTime(gt.GN[i][0],T);g.gain.linearRampToValueAtTime(gt.GN[i][1],T+dur*.25);g.gain.linearRampToValueAtTime(gt.GN[i][2],T+dur*.45);src.connect(bp);bp.connect(g);g.connect(lp)});
  src.start(T);vib.start(T);src.stop(T+dur+.05);vib.stop(T+dur+.05);sNz(T,.08,.1*v,'bandpass',1800,.8,o)}
-
-/* ---- canto da torcida (estilo arquibancada francesa) ---- */
+/* ---- canto da torcida ---- */
 let chantBusy=false,chantTm=[];
 function crowdVoice(T,f,dur,F1,F2,vol,cons,o){const env=ac.createGain();env.connect(o);const a=cons=='p'?.012:.045;
  env.gain.setValueAtTime(.0001,T);env.gain.exponentialRampToValueAtTime(vol,T+a);env.gain.setValueAtTime(vol*.9,T+Math.max(a+.01,dur*.6));env.gain.exponentialRampToValueAtTime(.0008,T+dur);
@@ -476,8 +477,8 @@ function initWorld(){
  const strap=new THREE.Mesh(new THREE.BoxGeometry(.05,.9,.02),new THREE.MeshStandardMaterial({color:'#f4f4f4'}));strap.position.set(0,.46,0);scene.add(strap);
  // paredes com faixas
  const wm=(txt,bg)=>new THREE.MeshStandardMaterial({map:bannerTex(txt,bg),roughness:.9});
- const fw=new THREE.Mesh(new THREE.PlaneGeometry(40,2.2),wm('TÊNIS OPEN','#0f3b2e'));fw.position.set(0,1.1,-19.5);scene.add(fw);
- const bw=new THREE.Mesh(new THREE.PlaneGeometry(40,2.2),wm('TÊNIS OPEN','#0f3b2e'));bw.position.set(0,1.1,19.5);bw.rotation.y=Math.PI;scene.add(bw);
+ const fw=new THREE.Mesh(new THREE.PlaneGeometry(40,2.2),wm('TÊNIS OPEN JVS','#0f3b2e'));fw.position.set(0,1.1,-19.5);scene.add(fw);
+ const bw=new THREE.Mesh(new THREE.PlaneGeometry(40,2.2),wm('TÊNIS OPEN JVS','#0f3b2e'));bw.position.set(0,1.1,19.5);bw.rotation.y=Math.PI;scene.add(bw);
  for(const sd of[-1,1]){const w=new THREE.Mesh(new THREE.PlaneGeometry(40,2.2),wm('SAIBRO • DURA • GRAMA','#123a5c'));w.position.set(sd*12,1.1,0);w.rotation.y=-sd*Math.PI/2;scene.add(w)}
  buildStands();
  // refletores (noite)
@@ -757,7 +758,7 @@ const onHome=()=>!$('home').classList.contains('off');
 addEventListener('pointerdown',()=>{if(onHome()&&MUS.on&&!MUS.playing)musStart();else if(ac&&ac.state!='running')ac.resume()},true);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)musStop();else if(onHome())musStart()});
 let startLvl=1;const cfg={fmt:'pts6',c:0,l:1,g:6,surf:'saibro',tod:'dia',sets:1};
-try{Object.assign(cfg,JSON.parse(localStorage.getItem('mtn_cfg2'))||{})}catch(e){}
+try{Object.assign(cfg,JSON.parse(localStorage.getItem('mtn_cfg2'))||{})}catch(e){}cfg.fmt='pts6';cfg.sets=1;if(!cfg.grunt)cfg.grunt='ain';
 const sync=()=>{charIdx=Math.min(cfg.c,CH.length-1);startLvl=cfg.l;GL=cfg.g},saveCfg=()=>{try{localStorage.setItem('mtn_cfg2',JSON.stringify(cfg))}catch(e){}};sync();
 const stBar=(t,v)=>'<span class="bar" data-t="'+t+'" style="--v:'+v*20+'%"></span>';
 const DESC={Nara:'Ritmo constante e ótima leitura de jogo',Davi:'Explosão física e golpes pesados',Íris:'A tenista mais precisa do circuito',Hugo:'Lento, mas cada golpe é uma bomba',Mei:'A mais veloz em quadra',Tomás:'Clássico, elegante e consistente',Zara:'Força e velocidade em equilíbrio',Leo:'Estilo ousado, sempre no ataque',Luna:'Rápida e incansável no fundo da quadra',Bruno:'Golpes pesados, potência pura',Kai:'Equilibrado em todos os fundamentos',Sofia:'Precisão para colocar a bola onde quer',Rayo:'Agressivo, joga a quadra inteira',Gelo:'Potência e frieza na linha de base',Muralha:'Defesa que devolve todas as bolas',Torre:'Alcance enorme e golpes fortes'};
@@ -767,7 +768,7 @@ function pickChar(dl){cfg.c=(charIdx+dl+CH.length)%CH.length;sync();saveCfg();my
 $('cPrev').onclick=()=>pickChar(-1);$('cNext').onclick=()=>pickChar(1);
 const segs=[...document.querySelectorAll('.seg')];
 function setChip(){renderChar();segs.forEach(sg=>[...sg.children].forEach(bt=>bt.classList.toggle('on',String(cfg[sg.dataset.k])==bt.dataset.v)))}
-segs.forEach(sg=>[...sg.children].forEach(bt=>bt.onclick=()=>{const v=bt.dataset.v;cfg[sg.dataset.k]=isNaN(+v)?v:+v;sync();setChip();saveCfg();if(sg.dataset.k=='surf'||sg.dataset.k=='tod')setupWorld()}));
+segs.forEach(sg=>[...sg.children].forEach(bt=>bt.onclick=()=>{const v=bt.dataset.v;cfg[sg.dataset.k]=isNaN(+v)?v:+v;sync();setChip();saveCfg();if(sg.dataset.k=='surf'||sg.dataset.k=='tod')setupWorld();if(sg.dataset.k=='grunt')setTimeout(()=>sfxGrunt(myC,.9,1),40)}));
 function showHome(){stopChant();if(aiVsAi){aiVsAi=false;document.body.classList.remove('ai');if(Sbak){S=Sbak;Sbak=null}joy=joyY=0}musStart();st='menu';SW=[null,null];frozen=false;$('hint').textContent='';document.body.classList.remove('play');$('home').classList.remove('off','how','stats','avatar','pass');$('hBest').textContent='Melhor nível '+best;$('cWins').textContent=S.wins+(S.wins==1?' vitória':' vitórias');setChip()}
 MUS.on=cfg.mus!==false;function setMusBtn(){const bt=$('hMus');bt.textContent=MUS.on?'♪ '+SG().n:'♪ Música desligada';bt.setAttribute('aria-pressed',MUS.on);$('hNext').style.display=MUS.on?'':'none'}setMusBtn();
 $('hNext').onclick=()=>{if(!MUS.on)return;musStop();setTimeout(musStart,150)};
