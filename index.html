@@ -818,8 +818,9 @@ function showHome(){stopChant();if(aiVsAi){aiVsAi=false;document.body.classList.
 MUS.on=cfg.mus!==false;function setMusBtn(){const bt=$('hMus');bt.textContent=MUS.on?'♪ '+SG().n:'♪ Música desligada';bt.setAttribute('aria-pressed',MUS.on);$('hNext').style.display=MUS.on?'':'none'}setMusBtn();
 $('hNext').onclick=()=>{if(!MUS.on)return;musStop();setTimeout(musStart,150)};
 $('hMus').onclick=()=>{MUS.on=!MUS.on;cfg.mus=MUS.on;saveCfg();setMusBtn();if(MUS.on)musStart();else musStop()};
-$('hAi').onclick=()=>{aiVsAi=true;Sbak=JSON.parse(JSON.stringify(S));document.body.classList.add('ai');$('home').classList.add('off');newMatch()};
-$('hStart').onclick=()=>{if(locked(CH[charIdx]))return;$('home').classList.add('off');lvl=startLvl;newMatch()};
+function introThen(fn){if(window.INTRO)return;window.INTRO=true;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();ac.resume()}catch(e){}sfxOut();musStop();runIntro(()=>{window.INTRO=false;fn()})}
+$('hAi').onclick=()=>introThen(()=>{aiVsAi=true;Sbak=JSON.parse(JSON.stringify(S));document.body.classList.add('ai');$('home').classList.add('off');newMatch()});
+$('hStart').onclick=()=>{if(locked(CH[charIdx]))return;introThen(()=>{$('home').classList.add('off');lvl=startLvl;newMatch()})};
 $('hHow').onclick=()=>$('home').classList.add('how');
 function updBalls(){const t2=WAL.balls+(WAL.balls==1?' bola':' bolas');$('cBalls').textContent=t2;$('pBalls').textContent=t2}
 const MIS=[{id:'w1',t:'Vença 1 partida',g:()=>S.wins,n:1,r:20},{id:'w3',t:'Vença 3 partidas',g:()=>S.wins,n:3,r:40},{id:'w10',t:'Vença 10 partidas',g:()=>S.wins,n:10,r:100},
